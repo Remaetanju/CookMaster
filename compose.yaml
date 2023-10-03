@@ -1,0 +1,22 @@
+services:
+
+  backend:
+    build:
+      context: ./serverCM/
+      dockerfile: Dockerfile
+    working_dir: /src
+    ports:
+      - "8000:5000" # prod
+      - "5000:5000" # dev port
+
+  backend_db:
+    platform: linux/x86_64
+
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+
+    build:
+      context: ./databaseCM/
+      dockerfile: Dockerfile
+    ports:
+      - "3306:3306"
