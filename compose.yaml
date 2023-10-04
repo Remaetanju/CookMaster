@@ -1,22 +1,49 @@
+version: '3'
 services:
 
-  backend:
+  back:
+    container_name: back
     build:
       context: ./serverCM/
       dockerfile: Dockerfile
     working_dir: /src
     ports:
-      - "8000:5000" # prod
-      - "5000:5000" # dev port
+      - "8000:5000"
+#    environment:
+#      FLASK_APP: "app.py"
+#      ENV FLASK_RUN_HOST: "0.0.0.0"
+    networks:
+      - back
 
-  backend_db:
+  db:
+    container_name: db
     platform: linux/x86_64
-
+    hostname: dbCMhost
     environment:
-      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: dbCM # target database for initialization via scripts
+      MYSQL_USER: back
+      MYSQL_PORT: 3306
+      MYSQL_PASSWORD: backword
 
     build:
       context: ./databaseCM/
       dockerfile: Dockerfile
     ports:
-      - "3306:3306"
+      - "3306:3308"  # port 3306 in container -> 3308 host
+    expose:
+      - "3306"  # in the same docker network you can find it via this port
+    networks:
+      - back
+
+#  monitor_db:
+#    container_name: dbadmin
+#    image: phpmyadmin:5.2.1-fpm-alpine
+#    ports:
+#      - "8001:80"
+#    networks:
+#      - back
+
+networks:
+  back:
+  front:

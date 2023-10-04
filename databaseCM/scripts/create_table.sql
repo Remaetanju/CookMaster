@@ -1,6 +1,6 @@
-CREATE DATABASE IF NOT EXISTS `marvel` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE DATABASE IF NOT EXISTS `dbCM` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 GO
-USE `marvel`;
+USE `dbCM`;
 GO
 CREATE TABLE `superheroes` (
   `superhero_id` int(11) NOT NULL,

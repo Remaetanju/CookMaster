@@ -1,19 +1,19 @@
-# Define User data-model
+from sqlalchemy.sql import func
+from flask_sqlalchemy import SQLAlchemy
 
-class User(db.Model, UserMixin):
-    __tablename__ = 'users'
+db = SQLAlchemy()
+
+
+class Student(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    firstname = db.Column(db.String(100), nullable=False)
+    lastname = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(80), unique=True, nullable=False)
+    age = db.Column(db.Integer)
+    created_at = db.Column(db.DateTime(timezone=True),
+                           server_default=func.now())
+    bio = db.Column(db.Text)
 
-    # User Authentication fields
-    email = db.Column(db.String(255), nullable=False, unique=True)
-    email_confirmed_at = db.Column(db.DateTime())
-    username = db.Column(db.String(50), nullable=False, unique=True)
-    password = db.Column(db.String(255), nullable=False)
+    def __repr__(self):
+        return f'<Student {self.firstname}>'
 
-    # User fields
-    active = db.Column(db.Boolean()),
-    first_name = db.Column(db.String(50), nullable=False)
-    last_name = db.Column(db.String(50), nullable=False)
-
-# Setup Flask-User
-user_manager = UserManager(app, db, User)
